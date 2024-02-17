@@ -15,7 +15,7 @@ pipeline {
 		
 		stage('Deploy to IIS') {
 			steps {
-				bat 'Xcopy build C:\\inetpub\\wwwroot\\ReactDevOpsExp5 /E /H /C /I /Y'
+				bat 'Xcopy build C:\\inetpub\\wwwroot\\reactApp /E /H /C /I /Y'
 				
 				// /E Copies all subdirectories, even if they're empty. 
 				// /H Copies files with hidden and system file attributes. 
