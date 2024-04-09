@@ -1,28 +1,29 @@
 pipeline {
-	agent any
-	tools {nodejs "LastestNode"}
-	stages {
-		stage('install npm packages') {
-			steps {
-				bat 'npm install'
-			}
-		}		
-		stage('Build project') {
-			steps {
-				bat 'npm run build'
-			}
-		}
-		
-		stage('Deploy to IIS') {
-			steps {
-				bat 'Xcopy build C:\\inetpub\\wwwroot\\reactApp /E /H /C /I /Y'
-				
-				// /E Copies all subdirectories, even if they're empty. 
-				// /H Copies files with hidden and system file attributes. 
-				// /C Ignores errors.
-				// /I Use the /i option to force xcopy to assume that destination is a directory.
-				// /Y is yes to all prompts
-			}
-		}
-	}
+    agent any
+    tools {nodejs "LatestNode"}
+    stages {
+        stage('Install npm packages') {
+            steps {
+                sh 'npm install'
+            }
+        }       
+        stage('Build project') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        
+        stage('Deploy to IIS') {
+            steps {
+                sh 'rsync -avz build/ user@remote_host:/var/www/html/react-site'
+                
+                // Explanation of rsync options:
+                // -a: Archive mode, which preserves permissions and other attributes
+                // -v: Verbose output
+                // -z: Compresses the data during transfer
+                // build/: Source directory to copy from
+                // user@remote_host:/var/www/html/reactApp: Destination directory to copy to
+            }
+        }
+    }
 }
